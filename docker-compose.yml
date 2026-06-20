@@ -1,0 +1,60 @@
+name: ${PROJECT_SLUG}
+
+# Runtime definition — image-based, NO build. The server only needs this file
+# plus .env, then `docker compose pull && up -d`. Build locally with the
+# docker-compose.build.yml overlay (see deploy/push.sh).
+#
+# Both networks are external — created by your existing infra:
+#   proxy            -> Traefik's network (Traefik discovers these services here; HTTPS is global on Traefik)
+#   postgres_default -> the shared Postgres compose's default network (so api can reach host `postgres`)
+networks:
+  proxy:
+    external: true
+  postgres_default:
+    external: true
+
+services:
+  api:
+    image: ${REGISTRY:-registry.cn-hangzhou.aliyuncs.com/zhoupb}/${PROJECT_SLUG}-api:${IMAGE_TAG:-latest}
+    env_file: .env
+    networks: [proxy, postgres_default]
+    restart: unless-stopped
+    healthcheck:
+      # bun ships in the image; hit /ready (checks DB reachability), not /health
+      # (liveness only). Port must match PORT (default 3000).
+      test:
+        - CMD
+        - bun
+        - -e
+        - "fetch('http://localhost:3000/ready').then(r => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))"
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      # TLS is handled globally by Traefik's websecure entrypoint — no per-router certresolver.
+      - traefik.http.routers.${PROJECT_SLUG}-api.rule=Host(`${DOMAIN}`) && PathPrefix(`/api`)
+      - traefik.http.routers.${PROJECT_SLUG}-api.entrypoints=websecure
+      - traefik.http.routers.${PROJECT_SLUG}-api.middlewares=${PROJECT_SLUG}-stripapi
+      - traefik.http.middlewares.${PROJECT_SLUG}-stripapi.stripprefix.prefixes=/api
+      - traefik.http.services.${PROJECT_SLUG}-api.loadbalancer.server.port=3000
+
+  web:
+    image: ${REGISTRY:-registry.cn-hangzhou.aliyuncs.com/zhoupb}/${PROJECT_SLUG}-web:${IMAGE_TAG:-latest}
+    networks: [proxy]
+    restart: unless-stopped
+    healthcheck:
+      # busybox wget is present in nginx:alpine
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=proxy
+      - traefik.http.routers.${PROJECT_SLUG}-web.rule=Host(`${DOMAIN}`)
+      - traefik.http.routers.${PROJECT_SLUG}-web.entrypoints=websecure
+      - traefik.http.services.${PROJECT_SLUG}-web.loadbalancer.server.port=80

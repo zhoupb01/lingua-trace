@@ -1,0 +1,22 @@
+# Build overlay — used ONLY locally to build the images defined in
+# docker-compose.yml. The server never sees this file.
+#
+#   docker compose -f docker-compose.yml -f docker-compose.build.yml build
+#
+# (deploy/push.sh wraps this.) The `image:` names come from docker-compose.yml,
+# so a build tags them ready to push.
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      args:
+        # public Logto config — baked into the bundle at build time
+        VITE_LOGTO_ENDPOINT: ${VITE_LOGTO_ENDPOINT}
+        VITE_LOGTO_APP_ID: ${VITE_LOGTO_APP_ID}
+        VITE_LOGTO_API_RESOURCE: ${VITE_LOGTO_API_RESOURCE}
