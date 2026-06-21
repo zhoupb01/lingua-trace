@@ -22,7 +22,7 @@ echo "==> building (IMAGE_TAG=${IMAGE_TAG})"
 docker compose -f docker-compose.yml -f docker-compose.build.yml build
 
 echo "==> pushing to registry"
-docker compose -f docker-compose.yml push
+docker compose -f docker-compose.yml -f docker-compose.build.yml push
 
 echo
 echo "Done. On the server (in this project dir, with docker-compose.yml + .env):"
