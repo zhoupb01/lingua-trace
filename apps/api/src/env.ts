@@ -27,18 +27,11 @@ const Env = z.object({
     LOGTO_ENDPOINT: z.url().transform((s) => s.replace(/\/+$/, "")),
     LOGTO_API_RESOURCE: z.string().min(1),
 
-    // OpenAI (Agents SDK) — the API key lives in OpenBao KV (secrets.ts); model and
-    // base URL are non-secret config. OPENAI_BASE_URL is optional (default OpenAI),
-    // set it to target an OpenAI-compatible endpoint.
+    // OpenAI — the API key lives in OpenBao KV (secrets.ts); model and base URL are
+    // non-secret config. OPENAI_BASE_URL is optional (default OpenAI), set it to
+    // target an OpenAI-compatible endpoint.
     OPENAI_MODEL: z.string().default("gpt-5.1"),
     OPENAI_BASE_URL: z.url().optional(),
-    // Use the Responses API (server-side state: previous_response_id, stored responses)?
-    // Unset → true on OpenAI, false when OPENAI_BASE_URL is set (most compatible
-    // endpoints only do /chat/completions and reject server-managed state). Override here.
-    OPENAI_USE_RESPONSES: z
-        .enum(["true", "false"])
-        .transform((v) => v === "true")
-        .optional(),
 })
 
 // safeParse → one actionable line per bad/missing var, instead of a raw ZodError

@@ -4,6 +4,8 @@ WORKDIR /app
 COPY package.json bun.lock ./
 COPY apps/api/package.json ./apps/api/
 COPY apps/web/package.json ./apps/web/
+COPY apps/extension/package.json ./apps/extension/
+COPY packages/shared/package.json ./packages/shared/
 RUN bun install --frozen-lockfile
 COPY tsconfig.base.json ./
 COPY apps/api ./apps/api

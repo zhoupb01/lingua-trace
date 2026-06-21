@@ -28,5 +28,10 @@
             "jsxQuoteStyle": "double",
             "semicolons": "asNeeded"
         }
+    },
+    "css": {
+        "parser": {
+            "tailwindDirectives": true
+        }
     }
 }

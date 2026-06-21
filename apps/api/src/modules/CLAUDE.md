@@ -33,7 +33,5 @@ So every service exposes an explicit projection:
 - If a server-side caller needs an internal column, read it via its own raw-row accessor
   rather than widening the response shape.
 
-Worked example in `modules/chat/chat.service.ts`: `sessionResponse` + `SessionResponse`
-(`= ReturnType<typeof sessionResponse>`) drop `userId`/`lastResponseId`; the task runner
-reads the response id server-side via `getLastResponseId(sessionId)` instead of off the
-session it's handed.
+Worked example in `modules/translation/translation.service.ts`: expose a response mapper
+that returns only client-facing fields, and keep ownership/bookkeeping columns server-side.

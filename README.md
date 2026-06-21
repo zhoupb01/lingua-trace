@@ -1,12 +1,12 @@
 # lingua-trace
 
-Per-project monorepo. Copy this directory for each new MVP; it connects to the
-shared platform (Traefik, Postgres, OpenBao, Logto) over external Docker networks.
+AI translation history app. It connects to the shared platform (Traefik, Postgres, OpenBao, Logto) over external Docker networks.
 
 ```
 apps/
-├── api/   # Bun + Hono + Drizzle + OpenBao + Logto   (exports AppType for RPC)
-└── web/   # React + Vite + Tailwind + TanStack + Logto (typed via @app/api)
+├── api/        # Bun + Hono + Drizzle + OpenBao + Logto + OpenAI
+├── web/        # React + Vite + Tailwind + TanStack + Logto
+└── extension/  # Chrome side panel + right-click selected-text translation
 ```
 
 Imports use `@/` (web) / `@api/` (api) → that app's `src/`. Cross-app types come
@@ -36,6 +36,7 @@ bun dev
 
 - web: http://localhost:5173 (Vite) — proxies `/api` → api
 - api: http://localhost:3000 (Bun, hot reload)
+- extension: `bun run dev:extension`, then load `apps/extension/dist` in Chrome
 
 Drizzle commands run in `apps/api`:
 
@@ -92,11 +93,8 @@ everything else → the nginx-served React bundle; the api reaches Postgres over
 - **Auth**: Logto issues a JWT; `apps/api/src/middleware/auth.ts` verifies it via
   JWKS. Protected routers call `.use('*', auth)`.
 - **Secrets**: `apps/api/src/secrets.ts` logs in to OpenBao with AppRole, then
-  reads Postgres static-role creds and the LLM API key from KV.
-- **Agent**: `apps/api/src/modules/chat` is a session-scoped agent on the OpenAI
-  Agents SDK (`@openai/agents`); `apps/api/src/lib/llm.ts` sets the OpenAI key from
-  KV (and disables trace upload). A turn runs as a detached in-memory task:
-  `POST /sessions/:id/messages` starts it and the reply streams over
-  `GET /sessions/:id/stream` (SSE) — the same stream the web app reopens to resume
-  mid-generation after a refresh. The UI is a session list + chat pane in
-  `apps/web/src/routes/chat.*` and `apps/web/src/components/chat`.
+  reads Postgres static-role creds and the OpenAI API key from KV.
+- **Translation**: `apps/api/src/modules/translation` provides `POST /translate`
+  (SSE), `GET/DELETE /translations`, and `POST /recognize-image`, all backed by
+  OpenAI and per-user Drizzle tables. Web `/app`, `/profile`, and the Chrome
+  extension call these endpoints.

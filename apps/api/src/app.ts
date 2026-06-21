@@ -1,8 +1,9 @@
 import { getDb } from "@api/db"
 import { notFound, onError } from "@api/lib/errors"
+import { resolveRequestLocale } from "@api/lib/i18n"
 import { requestLog } from "@api/middleware/logger"
 import { account } from "@api/modules/account/account.routes"
-import { chat } from "@api/modules/chat/chat.routes"
+import { translation } from "@api/modules/translation/translation.routes"
 import type { Variables } from "@api/types"
 import { sql } from "drizzle-orm"
 import { Hono } from "hono"
@@ -15,6 +16,10 @@ const app = new Hono<{ Variables: Variables }>()
 // request logger, then the shared error funnel.
 app.use(requestId())
 app.use(requestLog)
+app.use(async (c, next) => {
+    c.set("locale", resolveRequestLocale(c.req.header("Accept-Language")))
+    await next()
+})
 app.onError(onError)
 app.notFound(notFound)
 
@@ -36,7 +41,7 @@ const routes = app
         }
     })
     .route("/me", account)
-    .route("/chat", chat)
+    .route("/", translation)
 
 export { app }
 

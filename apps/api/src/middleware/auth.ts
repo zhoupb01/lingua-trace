@@ -1,5 +1,6 @@
 import { env } from "@api/env"
 import { AppError } from "@api/lib/errors"
+import { findOrCreateUser } from "@api/modules/account/account.service"
 import type { AuthUser, Variables } from "@api/types"
 import type { Context } from "hono"
 import { createMiddleware } from "hono/factory"
@@ -14,26 +15,32 @@ export const auth = createMiddleware<{ Variables: Variables }>(async (c, next) =
         throw new AppError(401, "UNAUTHORIZED", "missing bearer token")
     }
 
+    let payload: JWTPayload
     try {
-        const { payload } = await jwtVerify(header.slice(7), jwks, {
-            issuer: `${env.LOGTO_ENDPOINT}/oidc`,
-            audience: env.LOGTO_API_RESOURCE,
-        })
-        c.set("user", userFromJwtPayload(payload))
+        payload = (
+            await jwtVerify(header.slice(7), jwks, {
+                issuer: `${env.LOGTO_ENDPOINT}/oidc`,
+                audience: env.LOGTO_API_RESOURCE,
+            })
+        ).payload
     } catch (err) {
         if (err instanceof AppError) throw err
         throw new AppError(401, "INVALID_TOKEN", "invalid or expired token")
     }
 
+    const identity = userFromJwtPayload(payload)
+    const user = await findOrCreateUser(identity.logtoSub)
+    c.set("user", { ...identity, id: user.id })
     await next()
 })
 
-export function userFromJwtPayload(payload: JWTPayload): AuthUser {
+export function userFromJwtPayload(payload: JWTPayload): Omit<AuthUser, "id"> {
     if (typeof payload.sub !== "string" || payload.sub.trim() === "") {
         throw new AppError(401, "INVALID_TOKEN", "invalid token subject")
     }
     return {
         sub: payload.sub,
+        logtoSub: payload.sub,
         scopes: typeof payload.scope === "string" ? payload.scope.split(" ") : [],
         raw: payload as Record<string, unknown>,
     }
@@ -50,7 +57,7 @@ export function requireUser(c: Context<{ Variables: Variables }>): AuthUser {
 }
 
 // Authorization: run AFTER `auth` (it reads c.get("user")). 403 if the verified
-// token's scopes don't include `scope`. Chain it: .use("*", auth).use("*", requireScope("chat:write")).
+// token's scopes don't include `scope`. Chain it: .use("*", auth).use("*", requireScope("translation:write")).
 export const requireScope = (scope: string) =>
     createMiddleware<{ Variables: Variables }>(async (c, next) => {
         const user = requireUser(c)

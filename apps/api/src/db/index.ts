@@ -1,14 +1,15 @@
 import { existsSync } from "node:fs"
 import { env } from "@api/env"
 import { log } from "@api/lib/log"
-import * as chat from "@api/modules/chat/chat.schema"
+import * as account from "@api/modules/account/account.schema"
+import * as translation from "@api/modules/translation/translation.schema"
 import { type DbCreds, getDbCreds } from "@api/secrets"
 import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js"
 import { migrate } from "drizzle-orm/postgres-js/migrator"
 import postgres from "postgres"
 
 // Every module's *.schema.ts is aggregated here so Drizzle sees all tables.
-const schema = { ...chat }
+const schema = { ...account, ...translation }
 
 export type DB = PostgresJsDatabase<typeof schema>
 

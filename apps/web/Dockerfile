@@ -4,10 +4,14 @@ WORKDIR /app
 COPY package.json bun.lock ./
 COPY apps/api/package.json ./apps/api/
 COPY apps/web/package.json ./apps/web/
+COPY apps/extension/package.json ./apps/extension/
+COPY packages/shared/package.json ./packages/shared/
+COPY packages/shared/tsconfig.json ./packages/shared/
 RUN bun install --frozen-lockfile
 
 COPY tsconfig.base.json ./
 COPY apps/api ./apps/api
+COPY packages/shared ./packages/shared
 COPY apps/web ./apps/web
 
 # public client config — non-secret, baked into the bundle

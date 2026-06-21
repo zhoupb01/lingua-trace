@@ -3,25 +3,23 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { createRouter, RouterProvider } from "@tanstack/react-router"
 import { StrictMode } from "react"
 import { createRoot } from "react-dom/client"
-import { ErrorPage, NotFoundPage } from "@/components/Fallbacks"
-import { ApiError } from "@/lib/api"
-import { logtoConfig } from "@/lib/logto"
+import { LOGTO_API_RESOURCE, LOGTO_APP_ID, LOGTO_ENDPOINT, LOGTO_SCOPES } from "@/auth"
+import { I18nProvider } from "@/i18n"
+import { LogtoBridge } from "@/LogtoBridge"
+import { NotFound } from "@/NotFound"
 import { routeTree } from "@/routeTree.gen"
 import "@/styles.css"
 
 const queryClient = new QueryClient({
     defaultOptions: {
-        queries: {
-            // Don't retry client errors (a 4xx won't fix itself); retry the rest.
-            retry: (count, err) => !(err instanceof ApiError && err.status < 500) && count < 2,
-        },
+        queries: { refetchOnWindowFocus: false, retry: false },
+        mutations: { retry: false },
     },
 })
 const router = createRouter({
     routeTree,
     context: { queryClient },
-    defaultErrorComponent: ErrorPage,
-    defaultNotFoundComponent: NotFoundPage,
+    defaultNotFoundComponent: NotFound,
 })
 
 declare module "@tanstack/react-router" {
@@ -30,15 +28,26 @@ declare module "@tanstack/react-router" {
     }
 }
 
-const rootElement = document.getElementById("root")
+const rootElement = document.getElementById("root") ?? document.getElementById("app")
 if (!rootElement) throw new Error("root element not found")
 
 createRoot(rootElement).render(
     <StrictMode>
-        <LogtoProvider config={logtoConfig}>
-            <QueryClientProvider client={queryClient}>
-                <RouterProvider router={router} />
-            </QueryClientProvider>
-        </LogtoProvider>
+        <QueryClientProvider client={queryClient}>
+            <I18nProvider>
+                <LogtoProvider
+                    config={{
+                        endpoint: LOGTO_ENDPOINT,
+                        appId: LOGTO_APP_ID,
+                        resources: [LOGTO_API_RESOURCE],
+                        scopes: LOGTO_SCOPES,
+                    }}
+                >
+                    <LogtoBridge>
+                        <RouterProvider router={router} />
+                    </LogtoBridge>
+                </LogtoProvider>
+            </I18nProvider>
+        </QueryClientProvider>
     </StrictMode>,
 )

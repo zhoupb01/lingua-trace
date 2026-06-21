@@ -2,7 +2,6 @@ import { app } from "@api/app"
 import { closeDb, runMigrations } from "@api/db"
 import { env } from "@api/env"
 import { log } from "@api/lib/log"
-import { abortAll } from "@api/modules/chat/chat.tasks"
 import { startWorker } from "@api/worker"
 
 // `bun server.js migrate` applies pending migrations then exits — used in dev and
@@ -27,7 +26,6 @@ let shuttingDown = false
 async function shutdown(): Promise<void> {
     if (shuttingDown) return // a second signal shouldn't re-enter
     shuttingDown = true
-    abortAll() // stop in-flight LLM runs now (the user message persisted; clients resume from history)
     await server.stop(true) // force-close connections — open SSE streams never end on their own
     await worker.stop() // let the current worker batch finish…
     await closeDb() // …then drain the pool, after nothing else touches it

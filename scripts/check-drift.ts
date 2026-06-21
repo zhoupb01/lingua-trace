@@ -27,8 +27,8 @@ for (const key of schemaKeys) {
 
 // 2. The OpenBao KV key the app READS must match what provisioning WRITES.
 const KV_KEY = "OPENAI_API_KEY"
-if (!(await read("apps/api/src/lib/llm.ts")).includes(KV_KEY)) {
-    errors.push(`lib/llm.ts no longer reads ${KV_KEY}`)
+if (!(await read("apps/api/src/lib/openai.ts")).includes(KV_KEY)) {
+    errors.push(`lib/openai.ts no longer reads ${KV_KEY}`)
 }
 for (const p of ["../platform/provision.sh", "../platform/README.md"]) {
     if ((await exists(p)) && !(await read(p)).includes(KV_KEY)) {

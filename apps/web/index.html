@@ -3,10 +3,152 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>App</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#f7f9f8" />
+
+    <title>LinguaTrace — AI Translator with Saved Translation History</title>
+    <meta
+      name="description"
+      content="LinguaTrace is a minimal AI translator powered by OpenAI. Translate text into 10+ languages and automatically keep a private record of every translation."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="application-name" content="LinguaTrace" />
+    <link rel="canonical" href="https://lingua-trace.zhoupb.com/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LinguaTrace" />
+    <meta property="og:title" content="LinguaTrace — AI Translator with Saved Translation History" />
+    <meta
+      property="og:description"
+      content="A minimal AI translator powered by OpenAI. Translate into 10+ languages and keep a private record of every translation."
+    />
+    <meta property="og:url" content="https://lingua-trace.zhoupb.com/" />
+    <meta property="og:image" content="https://lingua-trace.zhoupb.com/og.svg" />
+    <meta property="og:image:type" content="image/svg+xml" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="LinguaTrace — translate anything, remember everything." />
+    <meta property="og:locale" content="en_US" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="LinguaTrace — AI Translator with Saved Translation History" />
+    <meta
+      name="twitter:description"
+      content="A minimal AI translator powered by OpenAI. Translate into 10+ languages and keep a private record of every translation."
+    />
+    <meta name="twitter:image" content="https://lingua-trace.zhoupb.com/og.svg" />
+
+    <!-- Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://lingua-trace.zhoupb.com/#website",
+            "name": "LinguaTrace",
+            "url": "https://lingua-trace.zhoupb.com/",
+            "description": "A minimal AI translator powered by OpenAI that keeps a private record of every translation.",
+            "inLanguage": "en"
+          },
+          {
+            "@type": "SoftwareApplication",
+            "name": "LinguaTrace",
+            "url": "https://lingua-trace.zhoupb.com/",
+            "applicationCategory": "ProductivityApplication",
+            "operatingSystem": "Web browser, Chrome",
+            "description": "LinguaTrace is a minimal AI translator powered by OpenAI. Translate text into 10+ languages and automatically keep a private, per-user record of every translation. An optional Chrome extension adds a side panel and a right-click translate action.",
+            "offers": {
+              "@type": "Offer",
+              "price": "0",
+              "priceCurrency": "USD"
+            },
+            "brand": {
+              "@type": "Brand",
+              "name": "LinguaTrace"
+            }
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "What is LinguaTrace?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "LinguaTrace is a minimal AI translator powered by OpenAI. You type or select any text, pick a target language, and it translates instantly, then automatically saves the result to your private log so you can look back on everything you have translated."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is LinguaTrace free to use?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. You sign in with a free account and start translating right away."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Which languages can I translate into?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "LinguaTrace supports 10+ target languages, including English, Simplified Chinese, Japanese, Korean, French, German, Spanish, Portuguese, Italian and Russian. Source text can be in any language."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Is my data private?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes. Every translation is saved only to your own account and is never shared or made public. The Chrome extension never reads pages on its own; it only handles text you type or explicitly select."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Do I need to install anything?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "No. LinguaTrace runs in your browser. There is also an optional Chrome extension that adds a side panel and a right-click Translate action."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "How is this different from a normal translator?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Most translators forget the moment you close the tab. LinguaTrace keeps a running record of what you translate, turning everyday translation into a personal language log you can learn from."
+                }
+              }
+            ]
+          }
+        ]
+      }
+    </script>
+
+    <script type="module" src="/src/main.tsx"></script>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <div id="app"></div>
+
+    <!-- Fallback content for crawlers and clients that do not execute JavaScript. -->
+    <noscript>
+      <main style="max-width: 42rem; margin: 0 auto; padding: 3rem 1.25rem; font-family: system-ui, sans-serif; color: #1a1a1e; line-height: 1.6;">
+        <h1>LinguaTrace — Translate anything. Remember everything.</h1>
+        <p>
+          LinguaTrace is a minimal AI translator powered by OpenAI. Type or select any text,
+          pick a target language, and translate — every translation is automatically saved to
+          your private log, so your translations stop disappearing and start adding up.
+        </p>
+        <ul>
+          <li>OpenAI-powered streaming translation.</li>
+          <li>Private, per-user records — nothing is shared or made public.</li>
+          <li>10+ target languages; source text can be in any language.</li>
+          <li>Optional Chrome extension: side panel plus a right-click Translate action.</li>
+        </ul>
+        <p><a href="/app">Open the app</a> — sign in to start translating. JavaScript is required to use the app.</p>
+      </main>
+    </noscript>
   </body>
 </html>

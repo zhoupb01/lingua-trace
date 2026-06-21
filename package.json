@@ -3,21 +3,23 @@
     "private": true,
     "type": "module",
     "workspaces": [
-        "apps/*"
+        "apps/*",
+        "packages/*"
     ],
     "scripts": {
         "init": "bun scripts/init.ts",
         "dev": "bun --elide-lines=0 --filter '@app/api' dev & bun --elide-lines=0 --filter '@app/web' dev & wait",
         "check:updates": "bun outdated --filter '*'",
         "prebuild": "bun run check:updates || true; bun run lint",
-        "build": "bun --filter '@app/web' build",
+        "build": "bun --filter @app/web build && bun --filter @app/extension build",
         "db:migrate": "bun --filter '@app/api' db:migrate",
         "typecheck": "bun --filter '*' typecheck",
         "format": "biome format --write .",
         "lint": "biome lint .",
         "check": "biome check --write .",
         "test": "bun --filter '*' test",
-        "ci": "bun scripts/check-drift.ts && biome ci . && bun run typecheck && bun run test"
+        "ci": "bun scripts/check-drift.ts && biome ci . && bun run typecheck && bun run test",
+        "dev:extension": "bun --filter @app/extension dev"
     },
     "devDependencies": {
         "@biomejs/biome": "^2.5.0",

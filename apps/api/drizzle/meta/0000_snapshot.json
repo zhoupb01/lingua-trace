@@ -1,11 +1,11 @@
 {
-    "id": "0c189cbf-1e2b-45d0-a5e4-426dcc7d6188",
+    "id": "aa43b390-fa31-43d4-b39a-68b2850abe5c",
     "prevId": "00000000-0000-0000-0000-000000000000",
     "version": "7",
     "dialect": "postgresql",
     "tables": {
-        "public.messages": {
-            "name": "messages",
+        "public.users": {
+            "name": "users",
             "schema": "",
             "columns": {
                 "id": {
@@ -15,21 +15,9 @@
                     "notNull": true,
                     "default": "gen_random_uuid()"
                 },
-                "session_id": {
-                    "name": "session_id",
-                    "type": "uuid",
-                    "primaryKey": false,
-                    "notNull": true
-                },
-                "seq": {
-                    "name": "seq",
-                    "type": "bigserial",
-                    "primaryKey": false,
-                    "notNull": true
-                },
-                "item": {
-                    "name": "item",
-                    "type": "jsonb",
+                "logto_sub": {
+                    "name": "logto_sub",
+                    "type": "text",
                     "primaryKey": false,
                     "notNull": true
                 },
@@ -42,47 +30,31 @@
                 }
             },
             "indexes": {
-                "messages_session_id_idx": {
-                    "name": "messages_session_id_idx",
+                "users_logto_sub_idx": {
+                    "name": "users_logto_sub_idx",
                     "columns": [
                         {
-                            "expression": "session_id",
-                            "isExpression": false,
-                            "asc": true,
-                            "nulls": "last"
-                        },
-                        {
-                            "expression": "seq",
+                            "expression": "logto_sub",
                             "isExpression": false,
                             "asc": true,
                             "nulls": "last"
                         }
                     ],
-                    "isUnique": false,
+                    "isUnique": true,
                     "concurrently": false,
                     "method": "btree",
                     "with": {}
                 }
             },
-            "foreignKeys": {
-                "messages_session_id_sessions_id_fk": {
-                    "name": "messages_session_id_sessions_id_fk",
-                    "tableFrom": "messages",
-                    "tableTo": "sessions",
-                    "columnsFrom": ["session_id"],
-                    "columnsTo": ["id"],
-                    "onDelete": "cascade",
-                    "onUpdate": "no action"
-                }
-            },
+            "foreignKeys": {},
             "compositePrimaryKeys": {},
             "uniqueConstraints": {},
             "policies": {},
             "checkConstraints": {},
             "isRLSEnabled": false
         },
-        "public.sessions": {
-            "name": "sessions",
+        "public.translation_usage_daily": {
+            "name": "translation_usage_daily",
             "schema": "",
             "columns": {
                 "id": {
@@ -94,21 +66,22 @@
                 },
                 "user_id": {
                     "name": "user_id",
-                    "type": "text",
+                    "type": "uuid",
                     "primaryKey": false,
                     "notNull": true
                 },
-                "title": {
-                    "name": "title",
-                    "type": "text",
+                "usage_date": {
+                    "name": "usage_date",
+                    "type": "date",
                     "primaryKey": false,
-                    "notNull": false
+                    "notNull": true
                 },
-                "last_response_id": {
-                    "name": "last_response_id",
-                    "type": "text",
+                "request_count": {
+                    "name": "request_count",
+                    "type": "integer",
                     "primaryKey": false,
-                    "notNull": false
+                    "notNull": true,
+                    "default": 0
                 },
                 "created_at": {
                     "name": "created_at",
@@ -126,8 +99,91 @@
                 }
             },
             "indexes": {
-                "sessions_user_id_idx": {
-                    "name": "sessions_user_id_idx",
+                "translation_usage_daily_user_date_idx": {
+                    "name": "translation_usage_daily_user_date_idx",
+                    "columns": [
+                        {
+                            "expression": "user_id",
+                            "isExpression": false,
+                            "asc": true,
+                            "nulls": "last"
+                        },
+                        {
+                            "expression": "usage_date",
+                            "isExpression": false,
+                            "asc": true,
+                            "nulls": "last"
+                        }
+                    ],
+                    "isUnique": true,
+                    "concurrently": false,
+                    "method": "btree",
+                    "with": {}
+                }
+            },
+            "foreignKeys": {
+                "translation_usage_daily_user_id_users_id_fk": {
+                    "name": "translation_usage_daily_user_id_users_id_fk",
+                    "tableFrom": "translation_usage_daily",
+                    "tableTo": "users",
+                    "columnsFrom": ["user_id"],
+                    "columnsTo": ["id"],
+                    "onDelete": "no action",
+                    "onUpdate": "no action"
+                }
+            },
+            "compositePrimaryKeys": {},
+            "uniqueConstraints": {},
+            "policies": {},
+            "checkConstraints": {},
+            "isRLSEnabled": false
+        },
+        "public.translations": {
+            "name": "translations",
+            "schema": "",
+            "columns": {
+                "id": {
+                    "name": "id",
+                    "type": "uuid",
+                    "primaryKey": true,
+                    "notNull": true,
+                    "default": "gen_random_uuid()"
+                },
+                "user_id": {
+                    "name": "user_id",
+                    "type": "uuid",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "source_text": {
+                    "name": "source_text",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "translated_text": {
+                    "name": "translated_text",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "target_language": {
+                    "name": "target_language",
+                    "type": "text",
+                    "primaryKey": false,
+                    "notNull": true
+                },
+                "created_at": {
+                    "name": "created_at",
+                    "type": "timestamp with time zone",
+                    "primaryKey": false,
+                    "notNull": true,
+                    "default": "now()"
+                }
+            },
+            "indexes": {
+                "translations_user_created_idx": {
+                    "name": "translations_user_created_idx",
                     "columns": [
                         {
                             "expression": "user_id",
@@ -148,7 +204,17 @@
                     "with": {}
                 }
             },
-            "foreignKeys": {},
+            "foreignKeys": {
+                "translations_user_id_users_id_fk": {
+                    "name": "translations_user_id_users_id_fk",
+                    "tableFrom": "translations",
+                    "tableTo": "users",
+                    "columnsFrom": ["user_id"],
+                    "columnsTo": ["id"],
+                    "onDelete": "no action",
+                    "onUpdate": "no action"
+                }
+            },
             "compositePrimaryKeys": {},
             "uniqueConstraints": {},
             "policies": {},

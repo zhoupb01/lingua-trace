@@ -1,0 +1,10 @@
+# https://lingua-trace.zhoupb.com/ — robots
+# Public landing page (/) is open to crawlers. The app and auth routes are
+# login-gated and hold no indexable content, so they are disallowed.
+User-agent: *
+Allow: /
+Disallow: /app
+Disallow: /login
+Disallow: /callback
+
+Sitemap: https://lingua-trace.zhoupb.com/sitemap.xml

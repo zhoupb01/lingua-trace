@@ -1,0 +1,148 @@
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+@import "tailwindcss";
+
+/*
+ * 译迹 视觉语言 —— 与 web 端共用同一套 token（见 apps/web/src/styles.css）。
+ * 浅色、简洁、冷调近白底 + 翠绿单一强调色。改这里即换肤。
+ */
+@theme {
+    --font-sans:
+        "Geist Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+        "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    --font-mono: "Geist Mono Variable", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+    --color-paper: #f7f9f8;
+    --color-paper-deep: #eef1f0;
+    --color-surface: #ffffff;
+
+    --color-ink: #1a1a1e;
+    --color-ink-soft: #3f3f46;
+    --color-ink-muted: #6b7280;
+    --color-ink-faint: #9aa0aa;
+
+    --color-line: #e7eae9;
+    --color-line-strong: #d4d9d7;
+
+    --color-accent-50: #ecfdf5;
+    --color-accent-100: #d1fae5;
+    --color-accent-200: #a7f3d0;
+    --color-accent-300: #6ee7b7;
+    --color-accent-400: #34d399;
+    --color-accent-500: #10b981;
+    --color-accent-600: #059669;
+    --color-accent-700: #047857;
+    --color-accent-800: #065f46;
+
+    --color-danger-50: #fef2f2;
+    --color-danger-200: #fecaca;
+    --color-danger-600: #dc2626;
+    --color-danger-700: #b91c1c;
+
+    --shadow-card: 0 1px 2px -1px rgb(17 24 39 / 0.06), 0 6px 16px -10px rgb(17 24 39 / 0.1);
+    --shadow-pop: 0 12px 30px -12px rgb(17 24 39 / 0.16);
+}
+
+@layer base {
+    body {
+        @apply text-ink antialiased;
+        margin: 0;
+        min-width: 320px;
+        font-family: var(--font-sans);
+        font-optical-sizing: auto;
+        background-color: var(--color-paper);
+    }
+
+    .tnum {
+        font-variant-numeric: tabular-nums;
+    }
+
+    ::selection {
+        background: var(--color-accent-100);
+        color: var(--color-ink);
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-accent-500);
+        outline-offset: 2px;
+    }
+
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--color-line-strong) transparent;
+    }
+    *::-webkit-scrollbar {
+        width: 9px;
+    }
+    *::-webkit-scrollbar-thumb {
+        background: var(--color-line-strong);
+        border: 3px solid transparent;
+        border-radius: 999px;
+        background-clip: padding-box;
+    }
+}
+
+@keyframes rise {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: none;
+    }
+}
+
+@keyframes caret {
+    0%,
+    100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.rise {
+    animation: rise 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.caret-blink {
+    display: inline-block;
+    width: 0.5ch;
+    height: 1.05em;
+    margin-left: 2px;
+    vertical-align: -0.14em;
+    border-radius: 1.5px;
+    background: var(--color-accent-600);
+    animation: caret 1.1s steps(1) infinite;
+}
+
+.skeleton {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-paper-deep);
+}
+.skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.7), transparent);
+    animation: shimmer 1.6s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .rise,
+    .skeleton::after,
+    .caret-blink,
+    .animate-pulse {
+        animation: none;
+    }
+}

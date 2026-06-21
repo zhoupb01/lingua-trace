@@ -22,7 +22,7 @@ async function processBatch(): Promise<void> {
     //     returning *`)
     //   for (const job of claimed) {
     //     try {
-    //       await handle(job) // LLM work via @api/lib/llm
+    //       await handle(job) // IO-bound work
     //       await db.execute(sql`update jobs set status = 'done' where id = ${job.id}`)
     //     } catch (err) {
     //       workerLog.error({ err, job: job.id }, "job failed")

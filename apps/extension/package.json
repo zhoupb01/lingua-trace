@@ -1,0 +1,30 @@
+{
+    "name": "@app/extension",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "dev": "vite build --watch --mode development",
+        "build": "vite build && tsc --noEmit",
+        "typecheck": "tsc --noEmit",
+        "package": "bun run build && python3 scripts/zip-dist.py"
+    },
+    "dependencies": {
+        "@app/shared": "workspace:*",
+        "@fontsource-variable/geist": "^5.2.9",
+        "@fontsource-variable/geist-mono": "^5.2.8",
+        "@logto/browser": "^3.0.13",
+        "@tailwindcss/vite": "^4.3.1",
+        "@vitejs/plugin-react": "^6.0.2",
+        "react": "^19.2.7",
+        "react-dom": "^19.2.7",
+        "tailwindcss": "^4.3.1",
+        "vite": "^8.0.16"
+    },
+    "devDependencies": {
+        "@types/chrome": "^0.1.43",
+        "@types/node": "^25.9.3",
+        "@types/react": "^19.2.17",
+        "@types/react-dom": "^19.2.3",
+        "typescript": "^6.0.3"
+    }
+}

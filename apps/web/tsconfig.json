@@ -7,8 +7,10 @@
         "allowImportingTsExtensions": true,
         "paths": {
             "@/*": ["./src/*"],
-            "@api/*": ["../api/src/*"]
+            "@api/*": ["../api/src/*"],
+            "@app/shared": ["../../packages/shared/src/index.ts"],
+            "@app/shared/*": ["../../packages/shared/src/*"]
         }
     },
-    "include": ["src", "vite.config.ts", "vitest.setup.ts"]
+    "include": ["src", "vite.config.ts", "vitest.setup.ts", "../../packages/shared/src"]
 }

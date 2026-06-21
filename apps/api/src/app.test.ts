@@ -32,13 +32,21 @@ describe("app", () => {
         expect(res.status).toBe(404)
         expect(((await res.json()) as { code: string }).code).toBe("NOT_FOUND")
     })
+
+    test("localizes expected errors by Accept-Language", async () => {
+        const res = await app.request("/me", { headers: { "Accept-Language": "fr-FR,fr;q=0.9" } })
+        expect(res.status).toBe(401)
+        const body = (await res.json()) as { code: string; message: string }
+        expect(body.code).toBe("UNAUTHORIZED")
+        expect(body.message).toBe("Non autorisé")
+    })
 })
 
 describe("auth", () => {
     test("a verified token without subject is rejected", () => {
-        expect(() => userFromJwtPayload({ scope: "chat:read" })).toThrow(AppError)
+        expect(() => userFromJwtPayload({ scope: "translation:read" })).toThrow(AppError)
         try {
-            userFromJwtPayload({ sub: " ", scope: "chat:read" })
+            userFromJwtPayload({ sub: " ", scope: "translation:read" })
             throw new Error("expected missing subject to be rejected")
         } catch (err) {
             expect(err).toBeInstanceOf(AppError)
@@ -64,7 +72,7 @@ describe("onError", () => {
 
         expect(captured?.status).toBe(500)
         expect(captured?.body.code).toBe("INTERNAL")
-        expect(captured?.body.message).toBe("internal error") // curated, not the raw message
+        expect(captured?.body.message.toLowerCase()).toBe("internal error") // curated/localized, not the raw message
         expect(JSON.stringify(captured?.body)).not.toContain("hunter2") // internals never leak
     })
 })

@@ -27,7 +27,7 @@ apps/api/src/
                     <name>.service.ts (logic), <name>.schema.ts (Drizzle tables,
                     optional), <name>.test.ts. See modules/CLAUDE.md.
   db/          index.ts — client, migrations, schema aggregation
-  lib/         cross-module helpers (llm.ts = OpenAI key setup for the Agents SDK)
+  lib/         cross-module helpers (openai.ts = OpenAI client setup)
   middleware/  Hono middleware (auth.ts)
   env.ts       ALL env vars, validated with zod — read config only from here
   secrets.ts   OpenBao access (DB creds + KV) — read secrets only from here
@@ -83,7 +83,7 @@ apps/web/src/
   `drizzle(client)` (`drizzle-orm/pglite`), apply the committed migrations with
   `migrate(db, { migrationsFolder: "<…>/drizzle" })`, then `mock.module("@api/db",
   () => ({ getDb: async () => db }))` *before* importing the service. See
-  `apps/api/src/modules/chat/chat.service.test.ts`.
+  `apps/api/src/modules/translation/translation.service.test.ts`.
 - **web**: **Vitest**, reusing `apps/web/vite.config.ts` (same `@` alias,
   plugins, `import.meta.env`) in a happy-dom environment with
   `@testing-library/react`. Import the test API from `vitest` (not `bun:test`);
@@ -123,28 +123,21 @@ apps/web/src/
 
 ## Auth
 
-- Protect a router with `.use("*", auth)` (see `modules/account` / `modules/chat`);
+- Protect a router with `.use("*", auth)` (see `modules/account` / `modules/translation`);
   read the user via `c.get("user")`. Auth failures throw `AppError` (below).
 - Authorize with scopes: chain `requireScope` after `auth` —
-  `.use("*", auth).use("*", requireScope("chat:write"))`. It 403s when the token
+  `.use("*", auth).use("*", requireScope("translation:write"))`. It 403s when the token
   lacks the scope. Keep it optional in the template (Logto scopes are per-project),
   so it's shown as a commented example, not hard-wired onto every route.
 
-## Agent / chat
+## OpenAI / translation
 
-- The chat module is a real **agent** on the **OpenAI Agents SDK** (`@openai/agents`).
-  The SDK runs the loop (LLM call → tool round-trips → final answer) — there's no
-  hand-written dispatch.
-- `lib/llm.ts` `ensureLLM()` installs the default model provider from the OpenAI key
-  in OpenBao KV plus `env.OPENAI_BASE_URL`; call it before `run(agent, …)` (the chat
-  SSE route preflights it). The KV key is `OPENAI_API_KEY`; the model
-  (`env.OPENAI_MODEL`) and optional base URL (`env.OPENAI_BASE_URL`) are config.
-- Add tools in `modules/chat/chat.tools.ts` (SDK `tool()`); the agent + model live in
-  `chat.agent.ts`. `sessions`/`messages` store SDK history items (`AgentInputItem`)
-  verbatim as JSONB so a session replays straight back into `run()`.
-- Endpoints are session-scoped (`/chat/sessions…`); the message route streams the run
-  as SSE (text deltas + `tool_call`/`tool_result`/`done`/`error` events). Test the
-  agent offline by handing the `Agent` a fake `model` — see `chat.agent.test.ts`.
+- Translation uses the official `openai` client through `lib/openai.ts`; the API key
+  comes from OpenBao KV (`OPENAI_API_KEY`), while `env.OPENAI_MODEL` and optional
+  `env.OPENAI_BASE_URL` are config.
+- `modules/translation` owns text translation, image OCR, usage tracking, and
+  translation history. Keep OpenAI request construction in `translation.ai.ts` and
+  persistence/business rules in `translation.service.ts`.
 
 ## Errors & logging
 
@@ -165,11 +158,11 @@ apps/web/src/
   Output is JSON; `bun run dev` pipes it through pino-pretty.
 - **SSE:** once the stream opens the 200 is already sent, so `onError` can't help.
   Preflight anything that can fail *before* `streamSSE`, and handle mid-stream
-  errors in its `onError` callback with a terminal `error` event (see `modules/chat`).
+  errors in its `onError` callback with a terminal `error` event.
 - **Web side:** call the api through `unwrap(...)` (`apps/web/src/lib/api.ts`) so a
   failure becomes an `ApiError` (carries `code`/`message`/`requestId`) and TanStack
   Query handles it — don't hand-roll `res.ok` checks. Streamed (SSE) failures show
-  up as the terminal `error` event; `routes/chat.tsx` parses it.
+  up as terminal `error` events; parse them at the call site.
 
 ## Deploy & image size — don't undo
 
