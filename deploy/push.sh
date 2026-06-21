@@ -14,15 +14,29 @@ if [ ! -f .env ]; then
     exit 1
 fi
 
-# VITE_* are baked into the web image at build time — make sure .env holds the
-# production values before building.
+# Build-time interpolation — chiefly the VITE_* baked into the web bundle — reads
+# from these env files, later overriding earlier. .env is the base; if a
+# .env.production sits alongside it, its values win. So you can keep a dev .env for
+# local work and put only the prod overrides (the VITE_*) in .env.production.
+# Shell-exported vars (IMAGE_TAG below) still beat both.
+env_args=(--env-file .env)
+if [ -f .env.production ]; then
+    env_args+=(--env-file .env.production)
+    echo "==> env: .env + .env.production"
+else
+    echo "==> env: .env"
+fi
+
 export IMAGE_TAG="${1:-${IMAGE_TAG:-latest}}"
 
 echo "==> building (IMAGE_TAG=${IMAGE_TAG})"
-docker compose -f docker-compose.yml -f docker-compose.build.yml build
+docker compose "${env_args[@]}" -f docker-compose.yml -f docker-compose.build.yml build
 
 echo "==> pushing to registry"
-docker compose -f docker-compose.yml -f docker-compose.build.yml push
+# Both files are required: `docker compose push` only pushes services that have
+# a `build:` section (it assumes locally-built images), and that lives in the
+# build overlay. Without it, every service is silently Skipped.
+docker compose "${env_args[@]}" -f docker-compose.yml -f docker-compose.build.yml push
 
 echo
 echo "Done. On the server (in this project dir, with docker-compose.yml + .env):"

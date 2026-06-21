@@ -70,8 +70,11 @@ docker login registry.cn-hangzhou.aliyuncs.com   # once
 ./deploy/push.sh                                  # or: ./deploy/push.sh v1.2.3
 ```
 Builds `api` + `web` (via `docker-compose.build.yml`) and pushes
-`$REGISTRY/$PROJECT_SLUG-{api,web}:$IMAGE_TAG`. The `VITE_*` values are baked
-into the web image at build time, so build with the production `.env`.
+`$REGISTRY/$PROJECT_SLUG-{api,web}:$IMAGE_TAG`. The `VITE_*` values are baked into
+the web image at build time. `push.sh` reads build-time vars from `.env`, and —
+if present — layers `.env.production` over it (its values win), so you can keep a
+dev `.env` for local work and put only the prod overrides (the `VITE_*`) in
+`.env.production`. See `.env.production.example`.
 
 **Server — only needs `docker-compose.yml`, `.env`, and `deploy/*.sh`:**
 ```bash
