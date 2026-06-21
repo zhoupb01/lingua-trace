@@ -47,7 +47,7 @@ services:
     restart: unless-stopped
     healthcheck:
       # busybox wget is present in nginx:alpine
-      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://localhost/"]
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1/"]
       interval: 30s
       timeout: 5s
       retries: 3
