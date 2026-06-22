@@ -1,12 +1,10 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { ApiError, translateStream, translationsClient } from "@/lib/api"
-import { sendMessage, storageGet, storageRemove } from "@/lib/chrome"
+import { sendMessage, storageGet } from "@/lib/chrome"
 import {
     type AuthStatus,
     type AuthUser,
     type AuthUserResponse,
-    PENDING_SELECTION_KEY,
-    type PendingSelectionResponse,
     TARGET_LANGUAGE_KEY,
 } from "@/lib/messages"
 import {
@@ -209,28 +207,8 @@ export function App() {
                 await storageGet<Record<string, TargetLanguage | undefined>>(TARGET_LANGUAGE_KEY)
             setTargetLanguage(preferences[TARGET_LANGUAGE_KEY] ?? DEFAULT_TARGET_LANGUAGE)
             await refreshAuth()
-            const pending = await sendMessage<PendingSelectionResponse>({
-                type: "selection:get-pending",
-            })
-            if (pending.text) setText(pending.text)
         })().catch((error: unknown) => setAuthError(errorMessage(error)))
     }, [refreshAuth])
-
-    useEffect(() => {
-        const listener = (
-            changes: Record<string, chrome.storage.StorageChange>,
-            areaName: string,
-        ) => {
-            if (areaName !== "local") return
-            const next = changes[PENDING_SELECTION_KEY]?.newValue
-            if (typeof next !== "string" || !next.trim()) return
-            setText(next)
-            setView("translate")
-            void storageRemove(PENDING_SELECTION_KEY)
-        }
-        chrome.storage.onChanged.addListener(listener)
-        return () => chrome.storage.onChanged.removeListener(listener)
-    }, [])
 
     useEffect(() => {
         if (isSignedIn && view === "profile" && recordsPage === 0 && !recordsLoading)

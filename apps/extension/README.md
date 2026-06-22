@@ -1,6 +1,6 @@
 # LinguaTrace extension
 
-Chrome Manifest V3 side panel for selected-text translation, OCR, and history.
+Chrome Manifest V3 extension for in-page selected-text translation, OCR, and history.
 
 ## Build / dev
 

@@ -111,7 +111,7 @@ export const messages = {
         historyEmptyDescription: "在翻译页输入文本并翻译，历史会永久保留在这里。",
         allCaughtUp: "已显示全部记录",
         inputPlaceholder: "输入任意语言文本，支持多段；Ctrl / ⌘ + Enter 翻译…",
-        extInputPlaceholder: "输入任意语言文本；也可在网页中选中后右键翻译…",
+        extInputPlaceholder: "输入任意语言文本；也可在网页中选中文本后点「译」翻译…",
 
         uploadImage: "上传图片",
         pasteImageHint: "支持直接粘贴图片，自动识别并翻译",
@@ -141,7 +141,7 @@ export const messages = {
         time: "时间",
         signInTitle: "登录后开始记录",
         signInBody:
-            "插件会用你的 LinguaTrace 账号保存翻译记录。不会自动读取网页内容，只处理你手动输入或右键选中的文本。",
+            "插件会用你的 LinguaTrace 账号保存翻译记录。不会自动读取网页内容，只处理你手动输入或选中后点击翻译的文本。",
         loginSubtitle: "个人翻译记录 · 登录",
         logtoLogin: "使用 Logto 登录",
         callbackLoading: "登录处理中…",
@@ -154,7 +154,6 @@ export const messages = {
         requestFailed: "请求失败：{status}",
         emptyStream: "响应流为空",
         streamClosed: "翻译流异常结束",
-        menuTranslate: "用 LinguaTrace 翻译",
         signInCancelled: "登录已取消",
     },
     en: {
@@ -186,7 +185,7 @@ export const messages = {
         inputPlaceholder:
             "Enter text in any language. Multi-paragraph input supported. Ctrl / ⌘ + Enter to translate…",
         extInputPlaceholder:
-            "Type text in any language — or select text on a page and right-click to translate…",
+            "Type text in any language — or select text on a page and click 译 to translate…",
 
         uploadImage: "Upload image",
         pasteImageHint: "Paste an image here to OCR and translate automatically",
@@ -217,7 +216,7 @@ export const messages = {
         time: "Time",
         signInTitle: "Sign in to start saving",
         signInBody:
-            "The extension uses your LinguaTrace account to save translations. It never reads pages automatically — only the text you type or select and right-click.",
+            "The extension uses your LinguaTrace account to save translations. It never reads pages automatically — only text you type or select and explicitly translate.",
         loginSubtitle: "Personal translation records · Sign in",
         logtoLogin: "Sign in with Logto",
         callbackLoading: "Signing in…",
@@ -230,7 +229,6 @@ export const messages = {
         requestFailed: "Request failed: {status}",
         emptyStream: "Response stream is empty",
         streamClosed: "Translation stream ended unexpectedly",
-        menuTranslate: "Translate with LinguaTrace",
         signInCancelled: "Sign-in cancelled",
     },
     ja: {
@@ -259,7 +257,7 @@ export const messages = {
         allCaughtUp: "すべての記録を表示しました",
         inputPlaceholder: "任意の言語のテキストを入力。複数段落に対応。Ctrl / ⌘ + Enter で翻訳…",
         extInputPlaceholder:
-            "任意の言語のテキストを入力。ページで選択して右クリックでも翻訳できます…",
+            "任意の言語のテキストを入力。ページで選択して「译」をクリックして翻訳できます…",
 
         uploadImage: "画像をアップロード",
         pasteImageHint: "ここに画像を貼り付けると、自動でOCRして翻訳します",
@@ -289,7 +287,7 @@ export const messages = {
         time: "時間",
         signInTitle: "ログインして記録を始める",
         signInBody:
-            "拡張機能はあなたの LinguaTrace アカウントで翻訳を保存します。ページを自動で読み取ることはなく、入力または右クリックで選択したテキストだけを処理します。",
+            "拡張機能はあなたの LinguaTrace アカウントで翻訳を保存します。ページを自動で読み取ることはなく、入力または選択して明示的に翻訳したテキストだけを処理します。",
         loginSubtitle: "個人翻訳記録 · ログイン",
         logtoLogin: "Logto でログイン",
         callbackLoading: "ログイン処理中…",
@@ -302,7 +300,6 @@ export const messages = {
         requestFailed: "リクエスト失敗: {status}",
         emptyStream: "レスポンスストリームが空です",
         streamClosed: "翻訳ストリームが異常終了しました",
-        menuTranslate: "LinguaTrace で翻訳",
         signInCancelled: "ログインがキャンセルされました",
     },
     ko: {
@@ -333,7 +330,7 @@ export const messages = {
         inputPlaceholder:
             "어떤 언어의 텍스트든 입력하세요. 여러 문단 지원. Ctrl / ⌘ + Enter로 번역…",
         extInputPlaceholder:
-            "아무 언어의 텍스트나 입력하세요. 페이지에서 선택 후 우클릭으로도 번역할 수 있습니다…",
+            "아무 언어의 텍스트나 입력하세요. 페이지에서 선택 후 ‘译’를 눌러 번역할 수 있습니다…",
 
         uploadImage: "이미지 업로드",
         pasteImageHint: "여기에 이미지를 붙여 넣으면 자동으로 OCR 후 번역합니다",
@@ -363,7 +360,7 @@ export const messages = {
         time: "시간",
         signInTitle: "로그인하고 기록 시작",
         signInBody:
-            "확장 프로그램은 LinguaTrace 계정으로 번역을 저장합니다. 페이지를 자동으로 읽지 않으며, 입력하거나 우클릭으로 선택한 텍스트만 처리합니다.",
+            "확장 프로그램은 LinguaTrace 계정으로 번역을 저장합니다. 페이지를 자동으로 읽지 않으며, 입력하거나 선택 후 명시적으로 번역한 텍스트만 처리합니다.",
         loginSubtitle: "개인 번역 기록 · 로그인",
         logtoLogin: "Logto로 로그인",
         callbackLoading: "로그인 처리 중…",
@@ -376,7 +373,6 @@ export const messages = {
         requestFailed: "요청 실패: {status}",
         emptyStream: "응답 스트림이 비어 있습니다",
         streamClosed: "번역 스트림이 비정상적으로 종료되었습니다",
-        menuTranslate: "LinguaTrace로 번역",
         signInCancelled: "로그인이 취소되었습니다",
     },
     fr: {
@@ -409,7 +405,7 @@ export const messages = {
         inputPlaceholder:
             "Saisissez un texte dans n’importe quelle langue. Plusieurs paragraphes acceptés. Ctrl / ⌘ + Entrée pour traduire…",
         extInputPlaceholder:
-            "Saisissez du texte dans n’importe quelle langue — ou sélectionnez du texte sur une page et faites un clic droit pour traduire…",
+            "Saisissez du texte dans n’importe quelle langue — ou sélectionnez du texte sur une page puis cliquez sur « 译 »…",
         uploadImage: "Importer une image",
         pasteImageHint: "Collez une image ici pour lancer l’OCR et la traduction automatiquement",
         recognizingImage: "Reconnaissance…",
@@ -439,7 +435,7 @@ export const messages = {
         time: "Heure",
         signInTitle: "Connectez-vous pour enregistrer",
         signInBody:
-            "L’extension utilise votre compte LinguaTrace pour enregistrer les traductions. Elle ne lit jamais les pages automatiquement — uniquement le texte que vous saisissez ou sélectionnez par clic droit.",
+            "L’extension utilise votre compte LinguaTrace pour enregistrer les traductions. Elle ne lit jamais les pages automatiquement — uniquement le texte saisi ou sélectionné puis traduit explicitement.",
         loginSubtitle: "Historique personnel de traductions · Connexion",
         logtoLogin: "Se connecter avec Logto",
         callbackLoading: "Connexion en cours…",
@@ -453,7 +449,6 @@ export const messages = {
         requestFailed: "Échec de la requête : {status}",
         emptyStream: "Le flux de réponse est vide",
         streamClosed: "Le flux de traduction s’est terminé anormalement",
-        menuTranslate: "Traduire avec LinguaTrace",
         signInCancelled: "Connexion annulée",
     },
     de: {
@@ -485,7 +480,7 @@ export const messages = {
         inputPlaceholder:
             "Text in beliebiger Sprache eingeben. Mehrere Absätze möglich. Ctrl / ⌘ + Enter zum Übersetzen…",
         extInputPlaceholder:
-            "Text in beliebiger Sprache eingeben – oder Text auf einer Seite markieren und per Rechtsklick übersetzen…",
+            "Text in beliebiger Sprache eingeben – oder Text auf einer Seite markieren und auf „译“ klicken…",
         uploadImage: "Bild hochladen",
         pasteImageHint: "Bild hier einfügen, um OCR und Übersetzung automatisch zu starten",
         recognizingImage: "Erkennung läuft…",
@@ -515,7 +510,7 @@ export const messages = {
         time: "Zeit",
         signInTitle: "Anmelden, um zu speichern",
         signInBody:
-            "Die Erweiterung speichert Übersetzungen über dein LinguaTrace-Konto. Sie liest Seiten nie automatisch — nur den Text, den du eingibst oder per Rechtsklick auswählst.",
+            "Die Erweiterung speichert Übersetzungen über dein LinguaTrace-Konto. Sie liest Seiten nie automatisch — nur eingegebenen oder ausdrücklich übersetzten markierten Text.",
         loginSubtitle: "Persönliche Übersetzungsnotizen · Anmeldung",
         logtoLogin: "Mit Logto anmelden",
         callbackLoading: "Anmeldung läuft…",
@@ -529,7 +524,6 @@ export const messages = {
         requestFailed: "Anfrage fehlgeschlagen: {status}",
         emptyStream: "Der Antwortstream ist leer",
         streamClosed: "Der Übersetzungsstream wurde unerwartet beendet",
-        menuTranslate: "Mit LinguaTrace übersetzen",
         signInCancelled: "Anmeldung abgebrochen",
     },
     es: {
@@ -562,7 +556,7 @@ export const messages = {
         inputPlaceholder:
             "Introduce texto en cualquier idioma. Se admiten varios párrafos. Ctrl / ⌘ + Enter para traducir…",
         extInputPlaceholder:
-            "Escribe texto en cualquier idioma, o selecciona texto en una página y haz clic derecho para traducir…",
+            "Escribe texto en cualquier idioma, o selecciona texto en una página y haz clic en «译»…",
         uploadImage: "Subir imagen",
         pasteImageHint: "Pega aquí una imagen para hacer OCR y traducir automáticamente",
         recognizingImage: "Reconociendo…",
@@ -592,7 +586,7 @@ export const messages = {
         time: "Hora",
         signInTitle: "Inicia sesión para guardar",
         signInBody:
-            "La extensión usa tu cuenta de LinguaTrace para guardar traducciones. Nunca lee páginas automáticamente, solo el texto que escribes o seleccionas con clic derecho.",
+            "La extensión usa tu cuenta de LinguaTrace para guardar traducciones. Nunca lee páginas automáticamente, solo el texto que escribes o seleccionas y traduces explícitamente.",
         loginSubtitle: "Registro personal de traducciones · Inicio de sesión",
         logtoLogin: "Iniciar sesión con Logto",
         callbackLoading: "Iniciando sesión…",
@@ -605,7 +599,6 @@ export const messages = {
         requestFailed: "Error de solicitud: {status}",
         emptyStream: "El flujo de respuesta está vacío",
         streamClosed: "El flujo de traducción terminó de forma anómala",
-        menuTranslate: "Traducir con LinguaTrace",
         signInCancelled: "Inicio de sesión cancelado",
     },
     pt: {
@@ -636,7 +629,7 @@ export const messages = {
         inputPlaceholder:
             "Digite texto em qualquer idioma. Vários parágrafos são aceitos. Ctrl / ⌘ + Enter para traduzir…",
         extInputPlaceholder:
-            "Digite texto em qualquer idioma — ou selecione texto numa página e clique com o botão direito para traduzir…",
+            "Digite texto em qualquer idioma — ou selecione texto numa página e clique em “译”…",
         uploadImage: "Enviar imagem",
         pasteImageHint: "Cole uma imagem aqui para fazer OCR e traduzir automaticamente",
         recognizingImage: "Reconhecendo…",
@@ -666,7 +659,7 @@ export const messages = {
         time: "Hora",
         signInTitle: "Entre para começar a salvar",
         signInBody:
-            "A extensão usa sua conta LinguaTrace para salvar traduções. Nunca lê páginas automaticamente — apenas o texto que você digita ou seleciona com o botão direito.",
+            "A extensão usa sua conta LinguaTrace para salvar traduções. Nunca lê páginas automaticamente — apenas o texto que você digita ou seleciona e traduz explicitamente.",
         loginSubtitle: "Registro pessoal de traduções · Login",
         logtoLogin: "Entrar com Logto",
         callbackLoading: "Entrando…",
@@ -679,7 +672,6 @@ export const messages = {
         requestFailed: "Falha na requisição: {status}",
         emptyStream: "O fluxo de resposta está vazio",
         streamClosed: "O fluxo de tradução terminou de forma anormal",
-        menuTranslate: "Traduzir com LinguaTrace",
         signInCancelled: "Login cancelado",
     },
     it: {
@@ -712,7 +704,7 @@ export const messages = {
         inputPlaceholder:
             "Inserisci testo in qualsiasi lingua. Sono supportati più paragrafi. Ctrl / ⌘ + Invio per tradurre…",
         extInputPlaceholder:
-            "Scrivi testo in qualsiasi lingua — oppure seleziona del testo in una pagina e fai clic destro per tradurre…",
+            "Scrivi testo in qualsiasi lingua — oppure seleziona testo in una pagina e fai clic su “译”…",
         uploadImage: "Carica immagine",
         pasteImageHint: "Incolla qui un’immagine per eseguire OCR e traduzione automatica",
         recognizingImage: "Riconoscimento in corso…",
@@ -742,7 +734,7 @@ export const messages = {
         time: "Ora",
         signInTitle: "Accedi per iniziare a salvare",
         signInBody:
-            "L’estensione usa il tuo account LinguaTrace per salvare le traduzioni. Non legge mai le pagine automaticamente, solo il testo che digiti o selezioni col tasto destro.",
+            "L’estensione usa il tuo account LinguaTrace per salvare le traduzioni. Non legge mai le pagine automaticamente, solo il testo che digiti o selezioni e traduci esplicitamente.",
         loginSubtitle: "Registro personale delle traduzioni · Login",
         logtoLogin: "Accedi con Logto",
         callbackLoading: "Accesso in corso…",
@@ -755,7 +747,6 @@ export const messages = {
         requestFailed: "Richiesta non riuscita: {status}",
         emptyStream: "Il flusso di risposta è vuoto",
         streamClosed: "Il flusso di traduzione si è chiuso in modo anomalo",
-        menuTranslate: "Traduci con LinguaTrace",
         signInCancelled: "Accesso annullato",
     },
     ru: {
@@ -786,7 +777,7 @@ export const messages = {
         inputPlaceholder:
             "Введите текст на любом языке. Поддерживаются несколько абзацев. Ctrl / ⌘ + Enter для перевода…",
         extInputPlaceholder:
-            "Введите текст на любом языке — или выделите текст на странице и переведите правым кликом…",
+            "Введите текст на любом языке — или выделите текст на странице и нажмите «译»…",
         uploadImage: "Загрузить изображение",
         pasteImageHint: "Вставьте сюда изображение — OCR и перевод запустятся автоматически",
         recognizingImage: "Распознавание…",
@@ -815,7 +806,7 @@ export const messages = {
         time: "Время",
         signInTitle: "Войдите, чтобы сохранять",
         signInBody:
-            "Расширение сохраняет переводы через ваш аккаунт LinguaTrace. Оно никогда не читает страницы автоматически — только текст, который вы вводите или выделяете правой кнопкой.",
+            "Расширение сохраняет переводы через ваш аккаунт LinguaTrace. Оно никогда не читает страницы автоматически — только текст, который вы вводите или выделяете и явно переводите.",
         loginSubtitle: "Личный журнал переводов · Вход",
         logtoLogin: "Войти через Logto",
         callbackLoading: "Выполняется вход…",
@@ -828,7 +819,6 @@ export const messages = {
         requestFailed: "Ошибка запроса: {status}",
         emptyStream: "Поток ответа пуст",
         streamClosed: "Поток перевода завершился некорректно",
-        menuTranslate: "Перевести через LinguaTrace",
         signInCancelled: "Вход отменён",
     },
 } as const satisfies Record<AppLocale, Record<string, string>>

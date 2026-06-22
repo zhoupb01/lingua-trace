@@ -33,7 +33,7 @@ export function I18nProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         setCurrentLocale(locale, false)
         document.documentElement.lang = locale
-        // 同步当前界面语言到 chrome.storage，供后台（右键菜单标题等）读取。
+        // 同步当前界面语言到 chrome.storage，供后台 API 请求读取。
         void storageSet({ [LOCALE_KEY]: locale })
     }, [locale])
 

@@ -66,7 +66,7 @@ function extensionManifest(mode: string): Plugin {
                         manifest_version: 3,
                         name: "译迹 LinguaTrace",
                         short_name: "LinguaTrace",
-                        description: "在 Chrome 侧边栏中翻译选中文本，并自动保存到个人翻译记录。",
+                        description: "在网页中翻译选中文本，并自动保存到个人翻译记录。",
                         version: "0.1.0",
                         minimum_chrome_version: "116",
                         action: {
@@ -85,8 +85,15 @@ function extensionManifest(mode: string): Plugin {
                             "128": "icons/icon-128.png",
                         },
                         background: { service_worker: "background.js", type: "module" },
+                        content_scripts: [
+                            {
+                                matches: ["http://*/*", "https://*/*"],
+                                js: ["content.js"],
+                                run_at: "document_idle",
+                            },
+                        ],
                         side_panel: { default_path: "sidepanel.html" },
-                        permissions: ["contextMenus", "identity", "sidePanel", "storage"],
+                        permissions: ["identity", "sidePanel", "storage"],
                         host_permissions: Array.from(
                             new Set([originPattern(apiBaseUrl), originPattern(logtoEndpoint)]),
                         ),
@@ -120,6 +127,7 @@ export default defineConfig(({ mode }) => {
                     background: fileURLToPath(
                         new URL("./src/background/index.ts", import.meta.url),
                     ),
+                    content: fileURLToPath(new URL("./src/content/index.ts", import.meta.url)),
                 },
                 output: {
                     entryFileNames: "[name].js",
