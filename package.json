@@ -22,7 +22,7 @@
         "dev:extension": "bun --filter @app/extension dev"
     },
     "devDependencies": {
-        "@biomejs/biome": "^2.5.0",
+        "@biomejs/biome": "^2.5.1",
         "typescript": "^6.0.3"
     }
 }
