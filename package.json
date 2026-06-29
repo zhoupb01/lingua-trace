@@ -18,7 +18,7 @@
         "lint": "biome lint .",
         "check": "biome check --write .",
         "test": "bun --filter '*' test",
-        "ci": "bun scripts/check-drift.ts && biome ci . && bun run typecheck && bun run test",
+        "ci": "bun scripts/check-drift.ts && biome ci . && bun --filter '@app/web' build && bun run typecheck && bun run test",
         "dev:extension": "bun --filter @app/extension dev"
     },
     "devDependencies": {

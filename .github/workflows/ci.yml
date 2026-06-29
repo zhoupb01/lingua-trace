@@ -13,5 +13,5 @@ jobs:
         with:
           bun-version: latest
       - run: bun install --frozen-lockfile
-      # biome ci (format + lint, no writes) → typecheck both apps → run tests
+      # biome ci (format + lint, no writes) → web build (generates routes) → typecheck all workspaces → run tests
       - run: bun run ci
