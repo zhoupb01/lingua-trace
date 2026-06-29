@@ -45,12 +45,8 @@ function extensionManifest(mode: string): Plugin {
         env.VITE_EXTENSION_LOGTO_ENDPOINT || env.VITE_LOGTO_ENDPOINT || "https://auth.example.com"
 
     if (production) {
-        if (!env.VITE_EXTENSION_LOGTO_APP_ID && !env.VITE_LOGTO_APP_ID) {
-            requiredExtensionEnv(env, "VITE_EXTENSION_LOGTO_APP_ID")
-        }
-        if (!env.VITE_EXTENSION_LOGTO_API_RESOURCE && !env.VITE_LOGTO_API_RESOURCE) {
-            requiredExtensionEnv(env, "VITE_EXTENSION_LOGTO_API_RESOURCE")
-        }
+        requiredExtensionEnv(env, "VITE_EXTENSION_LOGTO_APP_ID")
+        requiredExtensionEnv(env, "VITE_EXTENSION_LOGTO_API_RESOURCE")
         assertProductionOrigin("VITE_EXTENSION_API_BASE_URL", apiBaseUrl)
         assertProductionOrigin("VITE_EXTENSION_LOGTO_ENDPOINT", logtoEndpoint)
     }

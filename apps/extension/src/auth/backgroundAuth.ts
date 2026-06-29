@@ -1,6 +1,7 @@
 import { Prompt } from "@logto/browser"
 import { env } from "@/lib/env"
 import type { AuthUser } from "@/lib/messages"
+import { assertAuthorizationUrl, explainAuthWindowError } from "./authWindow"
 import { getLogtoClient } from "./client"
 
 function redirectUri() {
@@ -29,19 +30,36 @@ function userFromClaims(claims: Record<string, unknown> | null | undefined): Aut
     }
 }
 
-async function launchAuthWindow(url: string) {
-    const callbackUrl = await chrome.identity.launchWebAuthFlow({ url, interactive: true })
+function authDiagnostics(redirectUri: string) {
+    return {
+        endpoint: env.logtoEndpoint,
+        appId: env.logtoAppId,
+        apiResource: env.logtoApiResource,
+        redirectUri,
+    }
+}
+
+async function launchAuthWindow(url: string, signInRedirectUri: string) {
+    const diagnostics = authDiagnostics(signInRedirectUri)
+    const authUrl = assertAuthorizationUrl(url, diagnostics)
+    let callbackUrl: string | undefined
+    try {
+        callbackUrl = await chrome.identity.launchWebAuthFlow({ url: authUrl, interactive: true })
+    } catch (error) {
+        throw explainAuthWindowError(error, diagnostics)
+    }
     if (!callbackUrl) throw new Error("sign-in cancelled")
     return callbackUrl
 }
 
 export async function signIn() {
+    const signInRedirectUri = redirectUri()
     let signInUrl = ""
     logto.adapter.navigate = (url) => {
         signInUrl = url
     }
-    await logto.signIn({ redirectUri: redirectUri(), prompt: Prompt.Consent })
-    await logto.handleSignInCallback(await launchAuthWindow(signInUrl))
+    await logto.signIn({ redirectUri: signInRedirectUri, prompt: Prompt.Consent })
+    await logto.handleSignInCallback(await launchAuthWindow(signInUrl, signInRedirectUri))
 }
 
 export async function signOut() {

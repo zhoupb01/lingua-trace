@@ -21,11 +21,17 @@ VITE_EXTENSION_LOGTO_APP_ID=lingua-trace-extension
 VITE_EXTENSION_LOGTO_API_RESOURCE=https://api.example.com
 ```
 
-`VITE_EXTENSION_LOGTO_*` falls back to the web `VITE_LOGTO_*` values. Register this Logto redirect URI:
+Development builds can fall back to the web `VITE_LOGTO_*` values. Production
+extension builds require explicit `VITE_EXTENSION_LOGTO_APP_ID` and
+`VITE_EXTENSION_LOGTO_API_RESOURCE` values. Register this Logto redirect URI on
+the extension Logto application:
 
 ```text
 https://<extension-id>.chromiumapp.org/
 ```
+
+For an unpacked build, copy the extension ID from `chrome://extensions` after
+loading `apps/extension/dist`.
 
 Package zip:
 

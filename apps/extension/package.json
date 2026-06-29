@@ -6,6 +6,7 @@
         "dev": "vite build --watch --mode development",
         "build": "vite build && tsc --noEmit",
         "typecheck": "tsc --noEmit",
+        "test": "bun test",
         "package": "bun run build && python3 scripts/zip-dist.py"
     },
     "dependencies": {
